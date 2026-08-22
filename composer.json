@@ -1,0 +1,13 @@
+{
+    "name": "laraflair/mandatory-payroll-deductions",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Laraflair\\MandatoryPayrollDeductions\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.3",
+        "brick/money": "^0.14.1"
+    }
+}
