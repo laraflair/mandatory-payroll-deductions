@@ -1,27 +1,28 @@
 {
-    "name": "laraflair/mandatory-payroll-deductions",
-    "type": "library",
-    "autoload": {
-        "psr-4": {
-            "Laraflair\\MandatoryPayrollDeductions\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        }
-    },
-    "require": {
-        "php": "^8.4",
-        "brick/money": "^0.14.1",
-        "laravel/helpers": "^1.8"
-    },
-    "require-dev": {
-        "pestphp/pest": "^5.1"
-    },
-    "config": {
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        }
+  "name": "laraflair/mandatory-payroll-deductions",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Laraflair\\MandatoryPayrollDeductions\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": "^8.4",
+    "brick/money": "^0.14.1",
+    "laravel/helpers": "^1.8"
+  },
+  "require-dev": {
+    "pestphp/pest": "^5.1"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  }
 }
