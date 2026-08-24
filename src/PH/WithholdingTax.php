@@ -4,12 +4,12 @@ namespace Laraflair\MandatoryPayrollDeductions\PH;
 
 use Brick\Math\RoundingMode;
 use Brick\Money\Money;
-use Illuminate\Support\Carbon;
 use Laraflair\MandatoryPayrollDeductions\PH\Concerns\ArrayModel;
 use Laraflair\MandatoryPayrollDeductions\PH\Enums\WithholdingTaxFrequency;
 
-class WithholdingTax extends ArrayModel
+class WithholdingTax
 {
+    use ArrayModel;
     private Money $total;
 
     protected static function dataFile(): string

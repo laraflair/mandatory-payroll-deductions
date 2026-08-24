@@ -2,13 +2,10 @@
 
 namespace Laraflair\MandatoryPayrollDeductions\PH\Concerns;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\LazyCollection;
 
-abstract class ArrayModel
+trait ArrayModel
 {
-    protected array $wheres = [];
-
     /**
      * Return the fully-qualified path to the data file for this model.
      */

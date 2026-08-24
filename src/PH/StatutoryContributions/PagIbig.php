@@ -8,9 +8,9 @@ use Illuminate\Support\Carbon;
 use Laraflair\MandatoryPayrollDeductions\PH\Concerns\ArrayModel;
 use Laraflair\MandatoryPayrollDeductions\PH\Concerns\StatutoryContributions;
 
-class PagIbig extends ArrayModel
+class PagIbig extends StatutoryContributions
 {
-    use StatutoryContributions;
+    use ArrayModel;
 
     protected static function dataFile(): string
     {
@@ -20,10 +20,6 @@ class PagIbig extends ArrayModel
     public function calculate(Money $amount): array
     {
         $compensation = $amount;
-
-        $this->employer = Money::of(0, currency: 'PHP', roundingMode: RoundingMode::HalfUp);
-        $this->employee = Money::of(0, currency: 'PHP', roundingMode: RoundingMode::HalfUp);
-        $this->total = Money::of(0, currency: 'PHP', roundingMode: RoundingMode::HalfUp);
 
         if ($compensation->isZero()) {
             return $this->toArray();
@@ -51,11 +47,11 @@ class PagIbig extends ArrayModel
             $monthlyTotal = $rawTotal;
         }
 
-        $this->employer = $monthlyTotal;
+        $this->setEmployee($monthlyTotal);
 
-        $this->employee = $monthlyTotal;
+        $this->setEmployer($monthlyTotal);
 
-        $this->total = $monthlyTotal->multipliedBy(2, RoundingMode::HalfUp);
+        $this->setTotal($monthlyTotal->multipliedBy(2, RoundingMode::HalfUp));
 
         return $this->toArray();
     }

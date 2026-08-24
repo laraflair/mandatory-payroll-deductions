@@ -7,9 +7,9 @@ use Brick\Money\Money;
 use Laraflair\MandatoryPayrollDeductions\PH\Concerns\ArrayModel;
 use Laraflair\MandatoryPayrollDeductions\PH\Concerns\StatutoryContributions;
 
-class SSS extends ArrayModel
+class SSS extends StatutoryContributions
 {
-    use StatutoryContributions;
+    use ArrayModel;
 
     protected static function dataFile(): string
     {
@@ -19,10 +19,6 @@ class SSS extends ArrayModel
     public function calculate(Money $amount): array
     {
         $compensation = $amount;
-
-        $this->employer = Money::of(0, currency: 'PHP', roundingMode: RoundingMode::HalfUp);
-        $this->employee = Money::of(0, currency: 'PHP', roundingMode: RoundingMode::HalfUp);
-        $this->total = Money::of(0, currency: 'PHP', roundingMode: RoundingMode::HalfUp);
 
         if ($compensation->isZero()) {
             return $this->toArray();
@@ -34,12 +30,19 @@ class SSS extends ArrayModel
 
         $contribution = data_get($model, 'amount_of_contributions');
 
-        $this->employer = $this->employer->plus(data_get($contribution, 'employer.total'), RoundingMode::HalfUp);
+        $this->setEmployee(
+            $this->getEmployee()->plus(data_get($contribution, 'employee.total'), RoundingMode::HalfUp)
+        );
 
-        $this->employee = $this->employee->plus(data_get($contribution, 'employee.total'), RoundingMode::HalfUp);
+        $this->setEmployer(
+            $this->getEmployer()->plus(data_get($contribution, 'employer.total'), RoundingMode::HalfUp)
+        );
 
-        $this->total = $this->total->plus($this->employee, RoundingMode::HalfUp)
-            ->plus($this->employer, RoundingMode::HalfUp);
+        $this->setTotal(
+            $this->getTotal()
+                ->plus($this->getEmployee(), RoundingMode::HalfUp)
+                ->plus($this->getEmployer(), RoundingMode::HalfUp)
+        );
 
         return $this->toArray();
     }

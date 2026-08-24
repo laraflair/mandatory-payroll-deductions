@@ -8,9 +8,9 @@ use Illuminate\Support\Carbon;
 use Laraflair\MandatoryPayrollDeductions\PH\Concerns\ArrayModel;
 use Laraflair\MandatoryPayrollDeductions\PH\Concerns\StatutoryContributions;
 
-class PhilHealth extends ArrayModel
+class PhilHealth extends StatutoryContributions
 {
-    use StatutoryContributions;
+    use ArrayModel;
 
     protected static function dataFile(): string
     {
@@ -20,10 +20,6 @@ class PhilHealth extends ArrayModel
     public function calculate(Money $amount): array
     {
         $compensation = $amount;
-
-        $this->employer = Money::of(0, currency: 'PHP', roundingMode: RoundingMode::HalfUp);
-        $this->employee = Money::of(0, currency: 'PHP', roundingMode: RoundingMode::HalfUp);
-        $this->total = Money::of(0, currency: 'PHP', roundingMode: RoundingMode::HalfUp);
 
         if ($compensation->isZero()) {
             return $this->toArray();
@@ -53,11 +49,11 @@ class PhilHealth extends ArrayModel
 
         $half = $monthlyTotal->dividedBy(2, RoundingMode::HalfUp);
 
-        $this->employer = $half;
+        $this->setEmployee($half);
 
-        $this->employee = $half;
+        $this->setEmployer($half);
 
-        $this->total = $monthlyTotal;
+        $this->setTotal($monthlyTotal);
 
         return $this->toArray();
     }
