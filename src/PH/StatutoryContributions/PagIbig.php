@@ -17,7 +17,7 @@ class PagIbig extends StatutoryContributions
         return __DIR__ . '/../Data/PagIbig.php';
     }
 
-    public function calculate(Money $amount): array
+    public function calculate(Money $amount, StatutoryContributions $deductions = new StatutoryContributions()): array
     {
         $compensation = $amount;
 
@@ -47,11 +47,19 @@ class PagIbig extends StatutoryContributions
             $monthlyTotal = $rawTotal;
         }
 
-        $this->setEmployee($monthlyTotal);
 
-        $this->setEmployer($monthlyTotal);
+        $this->setEmployee(
+            $monthlyTotal->minus($deductions->getEmployee(), RoundingMode::HalfUp)
+        );
 
-        $this->setTotal($monthlyTotal->multipliedBy(2, RoundingMode::HalfUp));
+        $this->setEmployer(
+            $monthlyTotal->minus($deductions->getEmployer(), RoundingMode::HalfUp)
+        );
+
+        $this->setTotal(
+            $monthlyTotal->multipliedBy(2, RoundingMode::HalfUp)
+                ->minus($deductions->getTotal(), RoundingMode::HalfUp)
+        );
 
         return $this->toArray();
     }

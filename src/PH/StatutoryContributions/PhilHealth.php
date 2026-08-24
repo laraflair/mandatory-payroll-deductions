@@ -17,7 +17,7 @@ class PhilHealth extends StatutoryContributions
         return __DIR__ . '/../Data/PhilHealth.php';
     }
 
-    public function calculate(Money $amount): array
+    public function calculate(Money $amount, StatutoryContributions $deductions = new StatutoryContributions()): array
     {
         $compensation = $amount;
 
@@ -49,11 +49,17 @@ class PhilHealth extends StatutoryContributions
 
         $half = $monthlyTotal->dividedBy(2, RoundingMode::HalfUp);
 
-        $this->setEmployee($half);
+        $this->setEmployee(
+            $half->minus($deductions->getEmployee(), RoundingMode::HalfUp)
+        );
 
-        $this->setEmployer($half);
+        $this->setEmployer(
+            $half->minus($deductions->getEmployer(), RoundingMode::HalfUp)
+        );
 
-        $this->setTotal($monthlyTotal);
+        $this->setTotal(
+            $monthlyTotal->minus($deductions->getTotal(), RoundingMode::HalfUp)
+        );
 
         return $this->toArray();
     }

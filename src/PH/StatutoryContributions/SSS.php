@@ -16,7 +16,7 @@ class SSS extends StatutoryContributions
         return __DIR__ . '/../Data/SSS.php';
     }
 
-    public function calculate(Money $amount): array
+    public function calculate(Money $amount, StatutoryContributions $deductions = new StatutoryContributions()): array
     {
         $compensation = $amount;
 
@@ -31,17 +31,22 @@ class SSS extends StatutoryContributions
         $contribution = data_get($model, 'amount_of_contributions');
 
         $this->setEmployee(
-            $this->getEmployee()->plus(data_get($contribution, 'employee.total'), RoundingMode::HalfUp)
+            $this->getEmployee()
+                ->plus(data_get($contribution, 'employee.total'), RoundingMode::HalfUp)
+                ->minus($deductions->getEmployee(), RoundingMode::HalfUp)
         );
 
         $this->setEmployer(
-            $this->getEmployer()->plus(data_get($contribution, 'employer.total'), RoundingMode::HalfUp)
+            $this->getEmployer()
+                ->plus(data_get($contribution, 'employer.total'), RoundingMode::HalfUp)
+                ->minus($deductions->getEmployer(), RoundingMode::HalfUp)
         );
 
         $this->setTotal(
             $this->getTotal()
                 ->plus($this->getEmployee(), RoundingMode::HalfUp)
                 ->plus($this->getEmployer(), RoundingMode::HalfUp)
+                ->minus($deductions->getTotal(), RoundingMode::HalfUp)
         );
 
         return $this->toArray();
