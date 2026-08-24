@@ -4,7 +4,7 @@ use Brick\Math\RoundingMode;
 use Brick\Money\Money;
 use Laraflair\MandatoryPayrollDeductions\PH\StatutoryContributions\SSS;
 
-test('calculate SSS with taxable gross pay 40,000', function () {
+it('calculate SSS with taxable gross pay 40,000', function () {
     $amount = Money::of(40000, 'PHP', roundingMode: RoundingMode::HalfUp);
 
     $result = new SSS()->calculate($amount);
@@ -18,7 +18,7 @@ test('calculate SSS with taxable gross pay 40,000', function () {
         ]);
 });
 
-test('calculate SSS with taxable gross pay 74,343', function () {
+it('calculate SSS with taxable gross pay 74,343', function () {
     $amount = Money::of(74_343, 'PHP', roundingMode: RoundingMode::HalfUp);
 
     $result = new SSS()->calculate($amount);
@@ -32,7 +32,7 @@ test('calculate SSS with taxable gross pay 74,343', function () {
         ]);
 });
 
-test('calculate SSS with taxable gross pay 10,500', function () {
+it('calculate SSS with taxable gross pay 10,500', function () {
     $amount = Money::of(10_500, 'PHP', roundingMode: RoundingMode::HalfUp);
 
     $result = new SSS()->calculate($amount);
@@ -46,7 +46,7 @@ test('calculate SSS with taxable gross pay 10,500', function () {
         ]);
 });
 
-test('calculate SSS with taxable gross pay 8,500', function () {
+it('calculate SSS with taxable gross pay 8,500', function () {
     $amount = Money::of(8_500, 'PHP', roundingMode: RoundingMode::HalfUp);
 
     $result = new SSS()->calculate($amount);

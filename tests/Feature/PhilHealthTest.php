@@ -4,7 +4,7 @@ use Brick\Math\RoundingMode;
 use Brick\Money\Money;
 use Laraflair\MandatoryPayrollDeductions\PH\StatutoryContributions\PhilHealth;
 
-test('calculate PhilHealth with basic salary of 40,000', function () {
+it('calculate PhilHealth with basic salary of 40,000', function () {
     $amount = Money::of(40_000, 'PHP', roundingMode: RoundingMode::HalfUp);
 
     $result = new PhilHealth()->calculate($amount);
@@ -18,7 +18,7 @@ test('calculate PhilHealth with basic salary of 40,000', function () {
         ]);
 });
 
-test('calculate PhilHealth with basic salary of 74,343', function () {
+it('calculate PhilHealth with basic salary of 74,343', function () {
     $amount = Money::of(74_343, 'PHP', roundingMode: RoundingMode::HalfUp);
 
     $result = new PhilHealth()->calculate($amount);
@@ -32,7 +32,7 @@ test('calculate PhilHealth with basic salary of 74,343', function () {
         ]);
 });
 
-test('calculate PhilHealth with basic salary of 23,000', function () {
+it('calculate PhilHealth with basic salary of 23,000', function () {
     $amount = Money::of(23_000, 'PHP', roundingMode: RoundingMode::HalfUp);
 
     $result = new PhilHealth()->calculate($amount);
@@ -46,7 +46,7 @@ test('calculate PhilHealth with basic salary of 23,000', function () {
         ]);
 });
 
-test('calculate PhilHealth with basic salary of 8,500', function () {
+it('calculate PhilHealth with basic salary of 8,500', function () {
     $amount = Money::of(8_500, 'PHP', roundingMode: RoundingMode::HalfUp);
 
     $result = new PhilHealth()->calculate($amount);
