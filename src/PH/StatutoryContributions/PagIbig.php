@@ -7,6 +7,7 @@ use Brick\Money\Money;
 use Illuminate\Support\Carbon;
 use Laraflair\MandatoryPayrollDeductions\PH\Concerns\ArrayModel;
 use Laraflair\MandatoryPayrollDeductions\PH\Concerns\StatutoryContributions;
+use Laraflair\MandatoryPayrollDeductions\PH\Enums\PagIbigFrequency;
 
 class PagIbig extends StatutoryContributions
 {
@@ -17,12 +18,17 @@ class PagIbig extends StatutoryContributions
         return __DIR__ . '/../Data/PagIbig.php';
     }
 
-    public function calculate(Money $amount, StatutoryContributions $deductions = new StatutoryContributions()): array
+    public function calculate(Money $amount, StatutoryContributions $deductions = new StatutoryContributions(), PagIbigFrequency $frequency = PagIbigFrequency::Monthly): array
     {
         $compensation = $amount;
 
         if ($compensation->isZero()) {
             return $this->toArray();
+        }
+
+        // If semi-monthly we multiple by 2
+        if ($frequency === PagIbigFrequency::SemiMonthly) {
+            $compensation = $compensation->multipliedBy(2, RoundingMode::HalfUp);
         }
 
         $model = $this->rows()
