@@ -40,8 +40,8 @@ class PagIbig extends StatutoryContributions
         $monthlyPremium = data_get($model, 'monthly_premium');
 
         $premiumRate = (string) data_get($model, 'premium_rate', 0);
-        $minMoney = Money::of(data_get($monthlyPremium, 'minimum'), 'PHP', roundingMode: RoundingMode::HalfUp);
-        $maxMoney = Money::of(data_get($monthlyPremium, 'maximum'), 'PHP', roundingMode: RoundingMode::HalfUp);
+        $minMoney = Money::of((string) data_get($monthlyPremium, 'minimum'), 'PHP', roundingMode: RoundingMode::HalfUp);
+        $maxMoney = Money::of((string) data_get($monthlyPremium, 'maximum'), 'PHP', roundingMode: RoundingMode::HalfUp);
 
         $rawTotal = $compensation->multipliedBy($premiumRate, RoundingMode::HalfUp);
 
@@ -53,19 +53,36 @@ class PagIbig extends StatutoryContributions
             $monthlyTotal = $rawTotal;
         }
 
+        if ($frequency === PagIbigFrequency::SemiMonthly) {
+            $this->setEmployee(
+                $monthlyTotal->minus($deductions->getEmployee(), RoundingMode::HalfUp)
+                    ->dividedBy(2,  RoundingMode::HalfUp)
+            );
 
-        $this->setEmployee(
-            $monthlyTotal->minus($deductions->getEmployee(), RoundingMode::HalfUp)
-        );
+            $this->setEmployer(
+                $monthlyTotal->minus($deductions->getEmployer(), RoundingMode::HalfUp)
+                    ->dividedBy(2,  RoundingMode::HalfUp)
+            );
 
-        $this->setEmployer(
-            $monthlyTotal->minus($deductions->getEmployer(), RoundingMode::HalfUp)
-        );
+            $this->setTotal(
+                $monthlyTotal->multipliedBy(2, RoundingMode::HalfUp)
+                    ->minus($deductions->getTotal(), RoundingMode::HalfUp)
+                    ->dividedBy(2,  RoundingMode::HalfUp)
+            );
+        } else {
+            $this->setEmployee(
+                $monthlyTotal->minus($deductions->getEmployee(), RoundingMode::HalfUp)
+            );
 
-        $this->setTotal(
-            $monthlyTotal->multipliedBy(2, RoundingMode::HalfUp)
-                ->minus($deductions->getTotal(), RoundingMode::HalfUp)
-        );
+            $this->setEmployer(
+                $monthlyTotal->minus($deductions->getEmployer(), RoundingMode::HalfUp)
+            );
+
+            $this->setTotal(
+                $monthlyTotal->multipliedBy(2, RoundingMode::HalfUp)
+                    ->minus($deductions->getTotal(), RoundingMode::HalfUp)
+            );
+        }
 
         return $this->toArray();
     }
