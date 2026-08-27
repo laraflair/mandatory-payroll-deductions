@@ -24,7 +24,7 @@ class StatutoryContributions
         $this->setTotal($total);
     }
 
-    protected function setEmployer(Money|BigDecimal|int|string $amount)
+    public function setEmployer(Money|BigDecimal|int|string $amount)
     {
         if ($amount instanceof Money) {
             $this->employer = $amount;
@@ -33,12 +33,12 @@ class StatutoryContributions
         $this->employer = Money::of($amount, 'PHP', roundingMode: RoundingMode::HalfUp);
     }
 
-    protected function getEmployer()
+    public function getEmployer()
     {
         return $this->employer;
     }
 
-    protected function setEmployee(Money|BigDecimal|int|string $amount)
+    public function setEmployee(Money|BigDecimal|int|string $amount)
     {
         if ($amount instanceof Money) {
             $this->employee = $amount;
@@ -47,12 +47,12 @@ class StatutoryContributions
         $this->employee = Money::of($amount, 'PHP', roundingMode: RoundingMode::HalfUp);
     }
 
-    protected function getEmployee()
+    public function getEmployee()
     {
         return $this->employee;
     }
 
-    protected function setTotal(Money|BigDecimal|int|string $amount)
+    public function setTotal(Money|BigDecimal|int|string $amount)
     {
         if ($amount instanceof Money) {
             $this->total = $amount;
@@ -62,12 +62,12 @@ class StatutoryContributions
         $this->total = Money::of($amount, 'PHP', roundingMode: RoundingMode::HalfUp);
     }
 
-    protected function getTotal()
+    public function getTotal()
     {
         return $this->total;
     }
 
-    protected function toArray(): array
+    public function toArray(): array
     {
         return [
             'employer' => $this->employer->getAmount()->toFloat(),
