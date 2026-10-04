@@ -32,20 +32,19 @@ class SSS extends StatutoryContributions
 
         $this->setEmployee(
             $this->getEmployee()
-                ->plus(data_get($contribution, 'employee.total'), RoundingMode::HalfUp)
+                ->plus((string) data_get($contribution, 'employee.total'), RoundingMode::HalfUp)
                 ->minus($deductions->getEmployee(), RoundingMode::HalfUp)
         );
 
         $this->setEmployer(
             $this->getEmployer()
-                ->plus(data_get($contribution, 'employer.total'), RoundingMode::HalfUp)
+                ->plus((string) data_get($contribution, 'employer.total'), RoundingMode::HalfUp)
                 ->minus($deductions->getEmployer(), RoundingMode::HalfUp)
         );
 
         $this->setTotal(
             $this->getTotal()
-                ->plus($this->getEmployee(), RoundingMode::HalfUp)
-                ->plus($this->getEmployer(), RoundingMode::HalfUp)
+                ->plus((string) data_get($contribution, 'total'), RoundingMode::HalfUp)
                 ->minus($deductions->getTotal(), RoundingMode::HalfUp)
         );
 
